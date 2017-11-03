@@ -1,0 +1,6 @@
+db.sqlite3
+*.pyc
+/logs/*
+/crawler_manager/__pycache__/*
+/crawler_manager/migrations/*
+.env/
