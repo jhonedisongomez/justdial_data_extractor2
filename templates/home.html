@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+    <ul class="navbar navbar-inverse">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="">form 1 /</a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="">form 2 /</a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="">List data /</a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="">Logout</a>
+    </ul>
+
+
+        <h1>Welcome</h1>
+        <h3>Please select a form to start scrapping</h3>
+
+    {% else %}
+
+    <ul class="nav nav-pills navbar navbar-inverse">
+        
+    </ul>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="panel panel-default data_panel">
+                            <div class="panel-heading">
+                            <h3 class="panel-title">WELCOME</h3>
+                            </div>
+                            <div class="panel-body">
+                            <form accept-charset="UTF-8" role="form" id="form" method="POST" action="/">
+                            {% csrf_token %}
+
+                                <fieldset>
+                                        <div class="form-group">
+                                        <input class="form-control" placeholder="Username" name="username" id="username" type="text">
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="form-control" placeholder="Password" name="password" type="password" id="password">
+                                    </div>
+                                    <input class="btn btn-lg btn-success btn-block" type="submit" value="Login">
+                                    {% if messages %}
+                                    <ul class="messagelist">{% for message in messages %}
+                                      <h4{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</h4>
+                                    {% endfor %}</ul>
+                                    {% endif %}           
+                                {% endif %}
+                                </fieldset>
+                                </form>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+        </div>
+
+
+{% endblock %}

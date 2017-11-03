@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <ul class="navbar navbar-inverse">
+
+            <a class="dropdown-toggle" data-toggle="dropdown" href="">form 1 /</a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="">form 2 /</a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="">List data /</a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="">Logout</a>
+                
+    </ul>
+
+    <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-2">
+                    <div class="panel panel-default data_panel">
+                            <div class="panel-heading">
+                            <h3 class="panel-title">Form 1 to Scrap</h3>
+                            </div>
+                            <div class="panel-body">
+                            <form accept-charset="UTF-8" role="form" id="form" method="POST" action="/">
+                            {% csrf_token %}
+
+                                <fieldset>
+                                    <div class="form-group">
+                                        <input class="form-control" placeholder="Type the url" name="url" id="url" type="text">
+                                    </div>
+                                    
+                                    <input class="btn btn-lg btn-success btn-block" type="submit" value="Start">
+                                    {% if messages %}
+                                    <ul class="messagelist">{% for message in messages %}
+                                      <h4{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</h4>
+                                    {% endfor %}</ul>
+                                    {% endif %}           
+                                    
+                                </fieldset>
+                                </form>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+        </div>
+
+
+{% endblock %}

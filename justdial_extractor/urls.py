@@ -15,7 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from crawler_manager.views import CrawlerView1,CrawlerView2, HomeView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^$', HomeView.as_view(), name='home'),
+    url(r'^form1', CrawlerView1.as_view(), name='form1'),
+    url(r'^form2', CrawlerView2.as_view(), name='form2'),
 ]
