@@ -4,3 +4,4 @@ db.sqlite3
 /crawler_manager/__pycache__/*
 /crawler_manager/migrations/*
 .env/
+debug.log
