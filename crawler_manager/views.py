@@ -31,6 +31,8 @@ class CrawlerView1(LoginRequiredMixin,TemplateView):
         driver.get(url)
         elem = driver.find_element_by_tag_name("body")
         no_of_pagedowns = 0
+        keyword = elem.find_element_by_class_name("input-control").get_attribute("value")
+        city_name = elem.find_element_by_class_name("city-result-input").get_attribute("value")
 
         while no_of_pagedowns:
             elem.send_keys(Keys.PAGE_DOWN)
@@ -59,8 +61,7 @@ class CrawlerView1(LoginRequiredMixin,TemplateView):
             address = ""
             website = ""
             other_webs = ""
-            keyword = ""
-            city_name = ""
+
             driver2.get(single_url)
             elem2 = driver2.find_element_by_tag_name("body")
             elem2.send_keys(Keys.PAGE_DOWN)
@@ -155,14 +156,15 @@ class CrawlerView2(LoginRequiredMixin,TemplateView):
     def post(self, request, *args, **kwargs):
         
         user = request.user.pk
-        keyword = "" 
-        city_name = "" 
         url = request.POST['url']
 
         driver = webdriver.Chrome("G:/freelance/justdial_data_extractor2/.env/selenium/webdriver/chromedriver.exe")
         driver2 = webdriver.Chrome("G:/freelance/justdial_data_extractor2/.env/selenium/webdriver/chromedriver.exe")
         driver.get(url)
         elem = driver.find_element_by_tag_name("body")
+        keyword = elem.find_element_by_class_name("input-control").get_attribute("value")
+        city_name = elem.find_element_by_class_name("city-result-input").get_attribute("value")
+
         no_of_pagedowns = 1
 
         while no_of_pagedowns:
