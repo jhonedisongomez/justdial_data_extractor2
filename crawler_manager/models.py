@@ -24,3 +24,23 @@ class CrawelIssue(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class CrawelIssue2(models.Model):
+
+    city_name = models.CharField(max_length=100)
+    keyword = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, default='')
+    contacts = models.CharField(max_length=100, default='')
+
+
+    def __str__(self):
+        return self.title
+
+class CrawelIssue3(models.Model):
+
+    contacts = models.CharField(max_length=100, default='')
+
+
+    def __str__(self):
+        return self.contacts

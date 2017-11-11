@@ -9,7 +9,8 @@ from django.contrib import messages
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
-from .models import CrawelIssue
+from .models import CrawelIssue, CrawelIssue2, CrawelIssue3
+
 
 class CrawlerView1(LoginRequiredMixin,TemplateView):
 
@@ -331,7 +332,143 @@ class CrawlerView2(LoginRequiredMixin,TemplateView):
             instance_index += 1
 
         return redirect('/admin/crawler_manager/crawelissue/')
+class CrawlerView3(LoginRequiredMixin,TemplateView):
 
+    template_name = "crawler_manager/crawler_page3.html"
+    login_url = "/"
+    class_form = ""
+
+    def get(self, request, *args, **kwargs):
+
+        return render(request, self.template_name)
+
+    def post(self, request, *args, **kwargs):
+
+        url = request.POST['url']
+        single_url = ""
+        driver = webdriver.Chrome("G:/freelance/justdial_data_extractor2/.env/selenium/webdriver/chromedriver.exe")
+        driver2 = webdriver.Chrome("G:/freelance/justdial_data_extractor2/.env/selenium/webdriver/chromedriver.exe")
+        driver.get(url)
+        elem = driver.find_element_by_tag_name("body")
+        no_of_pagedowns = 0
+        keyword = elem.find_element_by_class_name("input-control").get_attribute("value")
+        city_name = elem.find_element_by_class_name("city-result-input").get_attribute("value")
+
+        while no_of_pagedowns:
+            elem.send_keys(Keys.PAGE_DOWN)
+            time.sleep(0.2)
+            no_of_pagedowns-=1
+
+        isContact = False
+        instance_index = 0
+        for i in driver.find_elements_by_class_name("cntanr"):
+            try:
+
+                single_url = i.find_element_by_class_name("rating_div").get_attribute("href")
+            except Exception as e:
+
+                title = i.find_element_by_class_name("lng_cont_name").get_attribute("innerHTML")
+            
+            contacts = ""
+            
+            driver2.get(single_url)
+            elem2 = driver2.find_element_by_tag_name("body")
+            elem2.send_keys(Keys.PAGE_DOWN)
+            time.sleep(0.2)
+            title = elem2.find_element_by_class_name("fn").get_attribute("innerHTML")
+                
+            for contact in elem2.find_elements_by_class_name("leftdt"):
+                indexTel = 0
+                for tel in contact.find_elements_by_class_name("tel"):
+
+                    if indexTel == 0:
+                        contacts = tel.get_attribute("innerHTML")
+                    else:
+                        
+                        contacts =  contacts + " , " + tel.get_attribute("innerHTML")
+                        contacts = contacts.replace("<b>","")
+                        contacts = contacts.replace("</b>","")
+                    indexTel += 1
+                print(contacts)
+                
+                indexOtherWebs = 0
+            e = CrawelIssue2.objects.create(
+            keyword = keyword, 
+            city_name = city_name, 
+            title = title, 
+            contacts = contacts,  
+            
+            )
+            print ( 'No: {}, Saving data to database.'.format(instance_index))
+            instance_index += 1 
+
+        return redirect('/admin/crawler_manager/crawelissue2/')
+
+class CrawlerView4(LoginRequiredMixin,TemplateView):
+
+    template_name = "crawler_manager/crawler_page4.html"
+    login_url = "/"
+    class_form = ""
+
+    def get(self, request, *args, **kwargs):
+
+        return render(request, self.template_name)
+
+    def post(self, request, *args, **kwargs):
+
+        url = request.POST['url']
+        single_url = ""
+        driver = webdriver.Chrome("G:/freelance/justdial_data_extractor2/.env/selenium/webdriver/chromedriver.exe")
+        driver2 = webdriver.Chrome("G:/freelance/justdial_data_extractor2/.env/selenium/webdriver/chromedriver.exe")
+        driver.get(url)
+        elem = driver.find_element_by_tag_name("body")
+        no_of_pagedowns = 0
+        
+        while no_of_pagedowns:
+            elem.send_keys(Keys.PAGE_DOWN)
+            time.sleep(0.2)
+            no_of_pagedowns-=1
+
+        isContact = False
+        instance_index = 0
+        for i in driver.find_elements_by_class_name("cntanr"):
+            try:
+
+                single_url = i.find_element_by_class_name("rating_div").get_attribute("href")
+            except Exception as e:
+
+                pass
+            
+            contacts = ""
+            
+            driver2.get(single_url)
+            elem2 = driver2.find_element_by_tag_name("body")
+            elem2.send_keys(Keys.PAGE_DOWN)
+            time.sleep(0.2)
+                
+            for contact in elem2.find_elements_by_class_name("leftdt"):
+                indexTel = 0
+                for tel in contact.find_elements_by_class_name("tel"):
+
+                    if indexTel == 0:
+                        contacts = tel.get_attribute("innerHTML")
+                    else:
+                        
+                        contacts =  contacts + " , " + tel.get_attribute("innerHTML")
+                        contacts = contacts.replace("<b>","")
+                        contacts = contacts.replace("</b>","")
+                    indexTel += 1
+                print(contacts)
+                
+                indexOtherWebs = 0
+            e = CrawelIssue3.objects.create(
+            contacts = contacts,  
+            
+            )
+            print ( 'No: {}, Saving data to database.'.format(instance_index))
+            instance_index += 1 
+
+        return redirect('/admin/crawler_manager/crawelissue3/')
 class HomeView(TemplateView):
 
     template_name = "home.html"
